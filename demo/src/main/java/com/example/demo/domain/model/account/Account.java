@@ -1,5 +1,8 @@
 package com.example.demo.domain.model.account;
 
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -30,9 +33,11 @@ public class Account {
 
     @CreationTimestamp
     @Column(name = "created_on")
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
     private LocalDateTime created_on;
 
     @Column(name = "last_login")
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
     private LocalDateTime last_login;
 
 }
