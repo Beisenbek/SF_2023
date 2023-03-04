@@ -8,6 +8,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -41,5 +42,10 @@ public class AccountService {
 
         eventPublisher.publishEvent(event);
         return savedAccount;
+    }
+
+    @KafkaListener(topicPattern = "my_super_topic")
+    public void listenGroupFoo(String message) {
+        System.out.println("Received Message in group foo: " + message);
     }
 }
