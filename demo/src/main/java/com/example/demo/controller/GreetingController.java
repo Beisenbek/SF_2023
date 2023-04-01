@@ -1,8 +1,7 @@
 package com.example.demo.controller;
 
 import java.util.concurrent.atomic.AtomicLong;
-
-import com.example.demo.domain.model.Greeting;
+/*
 import com.example.demo.repository.AccountRepository;
 import com.example.demo.service.AccountService;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +15,7 @@ public class GreetingController {
     private static final String template = "Hello, %s!";
     private final AtomicLong counter = new AtomicLong();
     @GetMapping("/greeting")
-    public Greeting greeting(@RequestParam(value = "name", defaultValue = "World") String name) {
-        return new Greeting(counter.incrementAndGet(), String.format(template, name));
+    public String greeting(@RequestParam(value = "name", defaultValue = "World") String name) {
+        return "aa";
     }
-}
+}*/

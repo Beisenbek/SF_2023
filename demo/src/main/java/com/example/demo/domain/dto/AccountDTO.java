@@ -9,7 +9,7 @@ import java.util.UUID;
 
 @Data
 @AllArgsConstructor
-public class AccountCreateDTO {
+public class AccountDTO {
     @Schema(description = "valid person name", example = "John")
     private String username;
 
@@ -17,7 +17,6 @@ public class AccountCreateDTO {
 
     @Schema(description = "valid email address", example = "john_wick@mail.ru")
     private String email;
-
 
     @Schema(description = "loginDate", type = "string", example = "2023-04-01T05:37:26.123+0600")
     private ZonedDateTime loginDate;

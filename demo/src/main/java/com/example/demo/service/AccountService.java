@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.domain.dto.AccountCreateDTO;
+import com.example.demo.domain.dto.AccountDTO;
 import com.example.demo.domain.event.AccountCreatedEvent;
 import com.example.demo.domain.model.account.Account;
 import com.example.demo.repository.AccountRepository;
@@ -8,7 +9,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -25,11 +25,12 @@ public class AccountService {
         return accountRepository.findAll();
     }
 
-    public Account createAccount(AccountCreateDTO accountCreateDTO) throws JsonProcessingException {
+    public AccountDTO createAccount(AccountCreateDTO accountCreateDTO) throws JsonProcessingException {
         Account account = new Account();
         account.setEmail(accountCreateDTO.getEmail());
         account.setPassword(accountCreateDTO.getPassword());
         account.setUsername(accountCreateDTO.getUsername());
+        account.setLast_login(accountCreateDTO.getLoginDate());
         Account savedAccount = accountRepository.save(account);
 
         AccountCreatedEvent event = new AccountCreatedEvent();
@@ -41,10 +42,17 @@ public class AccountService {
         event.setMessagePayload(mapper.writeValueAsString(savedAccount));
 
         eventPublisher.publishEvent(event);
-        return savedAccount;
+
+        AccountDTO result = new AccountDTO(
+                savedAccount.getUsername(),
+                savedAccount.getPassword(),
+                savedAccount.getEmail(),
+                savedAccount.getLast_login());
+
+        return result;
     }
 
-    @KafkaListener(topicPattern = "my_super_topic")
+    //@KafkaListener(topicPattern = "my_super_topic")
     public void listenGroupFoo(String message) {
         System.out.println("Received Message in group foo: " + message);
     }
